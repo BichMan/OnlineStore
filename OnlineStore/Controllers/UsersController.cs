@@ -56,7 +56,7 @@ namespace OnlineStore.Controllers
             // only admins can access other user records
             var currentUser = (User)HttpContext.Items["User"];
             if (id != currentUser.Id && currentUser.Role != Role.Admin)
-                return Unauthorized(new { message = "Unauthorized" });
+                return Unauthorized(new { message = "Unauthorized. Enter your Id" });
 
             //var user =  _userService.GetById(id);
             var user = getUser(id);
@@ -73,12 +73,16 @@ namespace OnlineStore.Controllers
         {
             var currentUser = (User)HttpContext.Items["User"];
             if (id != currentUser.Id && currentUser.Role != Role.Admin)
-                return Unauthorized(new { message = "Unauthorized" });
+                return Unauthorized(new { message = "Unauthorized. Enter your Id" });
             var user = getUser(id);
             if (user == null)
             {
                 return NotFound(new { message = "User not found." });
 
+            }
+            if (_context.Users.Any(x => x.Username == model.Username)
+            {
+                return NotFound(new { message = "User Name đã được sử dụng. Hãy thử lại." });
             }
             var username = user.Username;
             var address = user.Address;
@@ -116,8 +120,8 @@ namespace OnlineStore.Controllers
             var response = _mapper.Map<User>(user);
             return Ok(response);
         }
-
-        [Authorize(Role.Admin)]
+        //[Authorize(Role.Admin)]
+        [AllowAnonymous]
         [HttpPost("registerUser")]
         public async Task<ActionResult<User>> RegisterUser(RegisterRequest model)
         {
@@ -140,7 +144,7 @@ namespace OnlineStore.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Đăng ký thành công." });
+            return Ok(new { message = "Đăng ký user thành công." });
 
         }
         //[Authorize(Role.Admin)]
