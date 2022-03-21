@@ -31,7 +31,7 @@ namespace OnlineStore.Controllers
         public IEnumerable<Product> Gets()
         {
             return _context.Products
-                .Include(x => x.productAttributes).Include(x => x.productCategory)
+                .Include(x => x.productAttributes).Include(x => x.productBrand)
                 .AsEnumerable();
         }
         [Authorize(Role.Admin)]
@@ -39,14 +39,14 @@ namespace OnlineStore.Controllers
         public async Task<ActionResult<Product>> Get(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            var productCategory = GetCategory(product.CategoryId);
+            var productCategory = GetCategory(product.BrandId);
             var productAttribute = GetAttribute(product.AttributesId);
             if (product == null)
             {
                 return NotFound(new { message = "Không tìm thấy sản phẩm này." });
             }
             product.productAttributes = productAttribute;
-            product.productCategory = productCategory;
+            product.productBrand = productCategory;
             return Ok(product);
         }
 
@@ -65,7 +65,7 @@ namespace OnlineStore.Controllers
             var price = product.Price;
             var description = product.Description;
             var content = product.Content;
-            var categoryId = product.CategoryId;
+            var categoryId = product.BrandId;
             var attributeId = product.AttributesId;
 
             if (model.Name == null)
@@ -109,7 +109,7 @@ namespace OnlineStore.Controllers
 
             _mapper.Map(model, product);
             product.productAttributes = productAttribute;
-            product.productCategory = productCategory;
+            product.productBrand = productCategory;
             _context.Products.Update(product);
             _context.SaveChanges();
             return Ok(product);
@@ -141,7 +141,7 @@ namespace OnlineStore.Controllers
 
             var product = _mapper.Map<Product>(model);
             product.productAttributes = productAttribute;
-            product.productCategory = productCategory;
+            product.productBrand = productCategory;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
@@ -171,9 +171,9 @@ namespace OnlineStore.Controllers
             return product;
         }
 
-        private ProductCategory GetCategory(int id)
+        private ProductBrand GetCategory(int id)
         {
-            var productCategory = _context.ProductCategories.Find(id);
+            var productCategory = _context.ProductBrands.Find(id);
             return productCategory;
         }
         private ProductAttribute GetAttribute(int id)

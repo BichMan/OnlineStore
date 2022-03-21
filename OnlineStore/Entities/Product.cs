@@ -13,10 +13,10 @@ namespace OnlineStore.Entities
         public decimal ? Price { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }
-        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
         public int AttributesId { get; set; }
-        [ForeignKey("FK_Cate")]
-        public ProductCategory productCategory { set; get; }
+        [ForeignKey("FK_Brand")]
+        public ProductBrand productBrand { set; get; }
         [ForeignKey("FK_Color")]
         public ProductAttribute productAttributes { set; get; }
     }

@@ -69,7 +69,9 @@ namespace OnlineStore.Controllers
         [HttpGet("{userid}")]
         public ActionResult<IEnumerable<CartResponse>> Get(int userid)
         {
-
+            var currentUser = (User)HttpContext.Items["User"];
+            if (userid != currentUser.Id)
+                return Unauthorized(new { message = "Unauthorized. Enter your Id." });
             var user = GetUser(userid);
             var allcart = new List<CartResponse>();
             var cart = _context.Carts.Where(p => p.userId == userid).ToArray();
@@ -144,10 +146,10 @@ namespace OnlineStore.Controllers
                 return NotFound(new { message = "Khong tim thay nguoi dung." });
             }
 
-            var productCategory = GetCategory(product.CategoryId);
+            var productCategory = GetCategory(product.BrandId);
             var productAttribute = GetAttribute(product.AttributesId);
             product.productAttributes = productAttribute;
-            product.productCategory = productCategory;
+            product.productBrand = productCategory;
             _mapper.Map(model, cart);
             cart.Quantity = model.Quantity;
             cart.product = product;
@@ -188,10 +190,10 @@ namespace OnlineStore.Controllers
             {
                 return NotFound(new { message = "Khong tim thay nguoi dung." });
             }
-            var productCategory = GetCategory(product.CategoryId);
+            var productCategory = GetCategory(product.BrandId);
             var productAttribute = GetAttribute(product.AttributesId);
             product.productAttributes = productAttribute;
-            product.productCategory = productCategory;
+            product.productBrand = productCategory;
             var cart = _mapper.Map<Cart>(model);
             cart.product = product;
             cart.user = user;
@@ -236,9 +238,9 @@ namespace OnlineStore.Controllers
             var product = _context.Products.Find(productId);
             return product;
         }
-        private ProductCategory GetCategory(int id)
+        private ProductBrand GetCategory(int id)
         {
-            var productCategory = _context.ProductCategories.Find(id);
+            var productCategory = _context.ProductBrands.Find(id);
             return productCategory;
         }
         private ProductAttribute GetAttribute(int id)

@@ -16,28 +16,28 @@ namespace OnlineStore.Controllers
     [Authorize]
     [Route("[controller]")]
     [ApiController]
-    public class ProductCategoriesController : ControllerBase
+    public class ProductBrandsController : ControllerBase
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
 
-        public ProductCategoriesController(DataContext context, IMapper mapper)
+        public ProductBrandsController(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductCategory>>> Gets()
+        public async Task<ActionResult<IEnumerable<ProductBrand>>> Gets()
         {
-            return await _context.ProductCategories.ToListAsync();
+            return await _context.ProductBrands.ToListAsync();
         }
         [Authorize(Role.Admin)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductCategory>> Get(int id)
+        public async Task<ActionResult<ProductBrand>> Get(int id)
         {
-            var productCategory = await _context.ProductCategories.FindAsync(id);
+            var productCategory = await _context.ProductBrands.FindAsync(id);
 
             if (productCategory == null)
             {
@@ -49,7 +49,7 @@ namespace OnlineStore.Controllers
 
         [Authorize(Role.Admin)]
         [HttpPut("{id}")]
-        public ActionResult<ProductCategory> Put(int id, ProductCategoryRequest model)
+        public ActionResult<ProductBrand> Put(int id, ProductBrandRequest model)
         {
             var productCategory = GetCategory(id);
             if (productCategory == null)
@@ -68,21 +68,21 @@ namespace OnlineStore.Controllers
             }
             _mapper.Map(model, productCategory);
 
-            _context.ProductCategories.Update(productCategory);
+            _context.ProductBrands.Update(productCategory);
             _context.SaveChanges();
             return Ok(productCategory);
         }
 
         [Authorize(Role.Admin)]
         [HttpPost]
-        public async Task<ActionResult<ProductCategory>> Post(ProductCategoryRequest model)
+        public async Task<ActionResult<ProductBrand>> Post(ProductBrandRequest model)
         {
             if ((model.Name == null) || (model.Description == null))
             {
                 return NotFound(new { message = "Vui lòng điền đầy đủ thông tin." });
             }
-            var productCategory = _mapper.Map<ProductCategory>(model);
-            _context.ProductCategories.Add(productCategory);
+            var productCategory = _mapper.Map<ProductBrand>(model);
+            _context.ProductBrands.Add(productCategory);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Thêm danh mục sản phẩm thành công." });
@@ -94,13 +94,13 @@ namespace OnlineStore.Controllers
         {
             try
             {
-                var productCategory = await _context.ProductCategories.FindAsync(id);
+                var productCategory = await _context.ProductBrands.FindAsync(id);
                 if (productCategory == null)
                 {
                     return NotFound(new { message = "Không tìm thấy Id này." });
                 }
 
-                _context.ProductCategories.Remove(productCategory);
+                _context.ProductBrands.Remove(productCategory);
                 await _context.SaveChangesAsync();
 
                 return Ok(new { message = "Xóa thông tin thành công." });
@@ -112,9 +112,9 @@ namespace OnlineStore.Controllers
 
         }
 
-        private ProductCategory GetCategory(int id)
+        private ProductBrand GetCategory(int id)
         {
-            var productCategory = _context.ProductCategories.Find(id);
+            var productCategory = _context.ProductBrands.Find(id);
             return productCategory;
         }
     }

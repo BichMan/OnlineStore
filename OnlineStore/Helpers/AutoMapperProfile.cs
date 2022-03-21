@@ -48,7 +48,7 @@ namespace WebApi.Helpers
                         return true;
                     }
                 ));
-            CreateMap<ProductCategoryRequest, ProductCategory>()
+            CreateMap<ProductBrandRequest, ProductBrand>()
                 .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>
                     {

@@ -22,7 +22,7 @@ namespace OnlineStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductCategories",
+                name: "ProductBrands",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -32,7 +32,7 @@ namespace OnlineStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCategories", x => x.Id);
+                    table.PrimaryKey("PK_ProductBrands", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,9 +79,9 @@ namespace OnlineStore.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
                     AttributesId = table.Column<int>(type: "int", nullable: false),
-                    FK_Cate = table.Column<int>(type: "int", nullable: true),
+                    FK_Brand = table.Column<int>(type: "int", nullable: true),
                     FK_Color = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -94,9 +94,9 @@ namespace OnlineStore.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_ProductCategories_FK_Cate",
-                        column: x => x.FK_Cate,
-                        principalTable: "ProductCategories",
+                        name: "FK_Products_ProductBrands_FK_Brand",
+                        column: x => x.FK_Brand,
+                        principalTable: "ProductBrands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -241,9 +241,9 @@ namespace OnlineStore.Migrations
                 column: "FK_Order_User");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_FK_Cate",
+                name: "IX_Products_FK_Brand",
                 table: "Products",
-                column: "FK_Cate");
+                column: "FK_Brand");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_FK_Color",
@@ -275,7 +275,7 @@ namespace OnlineStore.Migrations
                 name: "ProductAttributes");
 
             migrationBuilder.DropTable(
-                name: "ProductCategories");
+                name: "ProductBrands");
 
             migrationBuilder.DropTable(
                 name: "Users");

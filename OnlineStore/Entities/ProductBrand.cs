@@ -2,7 +2,7 @@
 
 namespace OnlineStore.Entities
 {
-    public class ProductCategory
+    public class ProductBrand
     {
         [Key]
         public int Id { get; set; }

@@ -164,7 +164,7 @@ namespace OnlineStore.Migrations
                     b.Property<int>("AttributesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -173,7 +173,7 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FK_Cate")
+                    b.Property<int?>("FK_Brand")
                         .HasColumnType("int");
 
                     b.Property<int?>("FK_Color")
@@ -190,7 +190,7 @@ namespace OnlineStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FK_Cate");
+                    b.HasIndex("FK_Brand");
 
                     b.HasIndex("FK_Color");
 
@@ -215,7 +215,7 @@ namespace OnlineStore.Migrations
                     b.ToTable("ProductAttributes");
                 });
 
-            modelBuilder.Entity("OnlineStore.Entities.ProductCategory", b =>
+            modelBuilder.Entity("OnlineStore.Entities.ProductBrand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,7 +230,7 @@ namespace OnlineStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductBrands");
                 });
 
             modelBuilder.Entity("OnlineStore.Entities.Slider", b =>
@@ -335,9 +335,9 @@ namespace OnlineStore.Migrations
 
             modelBuilder.Entity("OnlineStore.Entities.Product", b =>
                 {
-                    b.HasOne("OnlineStore.Entities.ProductCategory", "productCategory")
+                    b.HasOne("OnlineStore.Entities.ProductBrand", "productBrand")
                         .WithMany()
-                        .HasForeignKey("FK_Cate");
+                        .HasForeignKey("FK_Brand");
 
                     b.HasOne("OnlineStore.Entities.ProductAttribute", "productAttributes")
                         .WithMany()
@@ -345,7 +345,7 @@ namespace OnlineStore.Migrations
 
                     b.Navigation("productAttributes");
 
-                    b.Navigation("productCategory");
+                    b.Navigation("productBrand");
                 });
 #pragma warning restore 612, 618
         }

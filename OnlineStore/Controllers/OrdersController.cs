@@ -258,7 +258,7 @@ namespace OnlineStore.Controllers
         }
         private Cart GetCart(int id)
         {
-            var cart = _context.Carts.Find(id);
+            var cart = _context.Carts.Where(x=>x.userId==id).FirstOrDefault();
             return cart;
         }
 

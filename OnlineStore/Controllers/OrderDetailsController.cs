@@ -40,7 +40,7 @@ namespace OnlineStore.Controllers
                 }
                 var currentUser = (User)HttpContext.Items["User"];
                 if (order.UserId != currentUser.Id && currentUser.Role != Role.Admin)
-                    return Unauthorized(new { message = "Unauthorized. Your order Id could not be found" });
+                    return Unauthorized(new { message = "Unauthorized. Your order Id could not be found." });
                 
                 else
                 {
