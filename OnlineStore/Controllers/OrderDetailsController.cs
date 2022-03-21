@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Authorization;
+using OnlineStore.Entities;
 using OnlineStore.Helpers;
 using OnlineStore.Models.Orders;
 
 namespace OnlineStore.Controllers
 {
-    [Authorize]
+    [Authorize(Role.User)]
     [Route("[controller]")]
     [ApiController]
     public class OrderDetailsController : ControllerBase
@@ -31,11 +32,16 @@ namespace OnlineStore.Controllers
         {
             try
             {
+               
                 var order = _context.Orders.Find(orderid);
                 if (order == null)
                 {
                     return NotFound(new { message = "Khong tim thay don hang nay." });
                 }
+                var currentUser = (User)HttpContext.Items["User"];
+                if (order.UserId != currentUser.Id && currentUser.Role != Role.Admin)
+                    return Unauthorized(new { message = "Unauthorized. Your order Id could not be found" });
+                
                 else
                 {
                     var orderdetail = _context.OrderDetails.Where(x => x.OrderId == orderid).ToArray();

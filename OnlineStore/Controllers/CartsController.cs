@@ -13,7 +13,7 @@ using OnlineStore.Models.Products;
 
 namespace OnlineStore.Controllers
 {
-    [Authorize]
+    [Authorize(Role.User)]
     [Route("[controller]")]
     [ApiController]
     public class CartsController : ControllerBase
@@ -28,43 +28,43 @@ namespace OnlineStore.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Role.Admin)]
-        [HttpGet]
-        public ActionResult<IEnumerable<CartResponse>> Gets()
-        {
-            var allcart = new List<CartResponse>();
-            var carts = _context.Carts.ToArray();
-            foreach (var item in carts)
-            {
-                var product = GetProduct(item.productId);
-                item.product = product;
-                var response = _mapper.Map<CartResponse>(item);
-                response.Id = item.Id;
-                response.UserId = item.userId;
-                response.ProductId = item.productId;
-                response.Quantity = item.Quantity;
-                response.Price = item.product.Price;
-                response.Image = item.product.Image;
-                response.ProductName = item.product.Name;
-                response.Content = item.product.Content;
+        //[Authorize(Role.Admin)]
+        //[HttpGet]
+        //public ActionResult<IEnumerable<CartResponse>> Gets()
+        //{
+        //    var allcart = new List<CartResponse>();
+        //    var carts = _context.Carts.ToArray();
+        //    foreach (var item in carts)
+        //    {
+        //        var product = GetProduct(item.productId);
+        //        item.product = product;
+        //        var response = _mapper.Map<CartResponse>(item);
+        //        response.Id = item.Id;
+        //        response.UserId = item.userId;
+        //        response.ProductId = item.productId;
+        //        response.Quantity = item.Quantity;
+        //        response.Price = item.product.Price;
+        //        response.Image = item.product.Image;
+        //        response.ProductName = item.product.Name;
+        //        response.Content = item.product.Content;
 
-                allcart.Add(response);
-            }
-            for (int i = 0; i < allcart.Count; i++)
-            {
-                for (int j = i + 1; j < allcart.Count; j++)
-                {
-                    if (allcart[i].ProductName == allcart[j].ProductName)
-                    {
-                        allcart[i].Quantity = allcart[i].Quantity + allcart[j].Quantity;
-                        allcart.RemoveAt(j);
+        //        allcart.Add(response);
+        //    }
+        //    for (int i = 0; i < allcart.Count; i++)
+        //    {
+        //        for (int j = i + 1; j < allcart.Count; j++)
+        //        {
+        //            if (allcart[i].ProductName == allcart[j].ProductName)
+        //            {
+        //                allcart[i].Quantity = allcart[i].Quantity + allcart[j].Quantity;
+        //                allcart.RemoveAt(j);
 
-                    }
-                }
-                allcart[i].Total = allcart[i].Price * allcart[i].Quantity;
-            }
-            return Ok(allcart);
-        }
+        //            }
+        //        }
+        //        allcart[i].Total = allcart[i].Price * allcart[i].Quantity;
+        //    }
+        //    return Ok(allcart);
+        //}
 
         [HttpGet("{userid}")]
         public ActionResult<IEnumerable<CartResponse>> Get(int userid)

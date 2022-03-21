@@ -11,7 +11,7 @@ using OnlineStore.Models.Likes;
 
 namespace OnlineStore.Controllers
 {
-    [Authorize]
+    [Authorize(Role.User)]
     [Route("[controller]")]
     [ApiController]
     public class LikesController : ControllerBase
@@ -25,29 +25,29 @@ namespace OnlineStore.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Role.Admin)]
-        [HttpGet]
-        public ActionResult<IEnumerable<LikeResponse>> Gets()
-        {
-            var likes = _context.Likes.ToArray();
-            var alllike = new List<LikeResponse>();
-            foreach (var item in likes)
-            {
-                var product = GetProduct(item.ProductId);
-                item.product = product;
-                var response = _mapper.Map<LikeResponse>(item);
-                response.Id = item.Id;
-                response.Image = item.product.Image;
-                response.Name = item.product.Name;
-                response.Description = item.product.Description;
-                response.Content = item.product.Content;
-                response.Price = item.product.Price;
-                alllike.Add(response);
-            }
+        //[Authorize(Role.Admin)]
+        //[HttpGet]
+        //public ActionResult<IEnumerable<LikeResponse>> Gets()
+        //{
+        //    var likes = _context.Likes.ToArray();
+        //    var alllike = new List<LikeResponse>();
+        //    foreach (var item in likes)
+        //    {
+        //        var product = GetProduct(item.ProductId);
+        //        item.product = product;
+        //        var response = _mapper.Map<LikeResponse>(item);
+        //        response.Id = item.Id;
+        //        response.Image = item.product.Image;
+        //        response.Name = item.product.Name;
+        //        response.Description = item.product.Description;
+        //        response.Content = item.product.Content;
+        //        response.Price = item.product.Price;
+        //        alllike.Add(response);
+        //    }
 
 
-            return Ok(alllike);
-        }
+        //    return Ok(alllike);
+        //}
 
         [HttpGet("{UserId}")]
         public ActionResult<IEnumerable<LikeResponse>> Get(int UserId)

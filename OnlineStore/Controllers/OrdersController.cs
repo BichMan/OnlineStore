@@ -25,29 +25,29 @@ namespace OnlineStore.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Role.Admin)]
-        [HttpGet]
-        public ActionResult<IEnumerable<OrderResponse>> Gets()
-        {
-            var allorder = new List<OrderResponse>();
-            var orders = _context.Orders.ToArray(); ;
-            foreach (var order in orders)
-            {
-                var user = GetUser(order.UserId);
-                order.user = user;
-                var response = _mapper.Map<OrderResponse>(order);
-                response.Id = order.Id;
-                response.CustomerId = order.UserId;
-                response.CustomerName = order.user.Username;
-                response.AddressShipping = order.user.Address;
-                response.OrderDate = order.OrderDate;
-                response.OrderStatus = order.OrderStatus;
-                response.Note = order.Note;
+        //[Authorize(Role.Admin)]
+        //[HttpGet]
+        //public ActionResult<IEnumerable<OrderResponse>> Gets()
+        //{
+        //    var allorder = new List<OrderResponse>();
+        //    var orders = _context.Orders.ToArray(); ;
+        //    foreach (var order in orders)
+        //    {
+        //        var user = GetUser(order.UserId);
+        //        order.user = user;
+        //        var response = _mapper.Map<OrderResponse>(order);
+        //        response.Id = order.Id;
+        //        response.CustomerId = order.UserId;
+        //        response.CustomerName = order.user.Username;
+        //        response.AddressShipping = order.user.Address;
+        //        response.OrderDate = order.OrderDate;
+        //        response.OrderStatus = order.OrderStatus;
+        //        response.Note = order.Note;
 
-                allorder.Add(response);
-            }
-            return Ok(allorder);
-        }
+        //        allorder.Add(response);
+        //    }
+        //    return Ok(allorder);
+        //}
 
         //[Authorize(Role.Admin)]
         //[HttpGet("getOrderId/{id}")]
@@ -71,9 +71,13 @@ namespace OnlineStore.Controllers
         //    response.Note = order.Note;
         //    return Ok(response);
         //}
+        [Authorize(Role.User)]
         [HttpGet("{userid}")]
         public ActionResult<IEnumerable<OrderResponse>> GetOrderUser(int userid)
         {
+            var currentUser = (User)HttpContext.Items["User"];
+            if (userid != currentUser.Id)
+                return Unauthorized(new { message = "Unauthorized. Enter your Id." });
             var user = GetUser(userid);
             var allorder = new List<OrderResponse>();
             var orders = _context.Orders.Where(x => x.UserId == userid).ToArray();
@@ -131,7 +135,7 @@ namespace OnlineStore.Controllers
             response.Note = order.Note;
             return Ok(response);
         }
-
+        [Authorize(Role.User)]
         [HttpPost]
         public ActionResult<OrderResponse> Post(OrderRequest model)
         {
