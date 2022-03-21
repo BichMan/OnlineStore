@@ -6,7 +6,7 @@ namespace OnlineStore.Entities
 {
     public class User
     {
-       
+        [Key]
         public int Id { get; set; }
         public string Username { get; set; }
         [DataType(DataType.EmailAddress)]

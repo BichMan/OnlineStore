@@ -143,7 +143,8 @@ namespace OnlineStore.Controllers
             return Ok(new { message = "Đăng ký thành công." });
 
         }
-        [Authorize(Role.Admin)]
+        //[Authorize(Role.Admin)]
+        [AllowAnonymous]
         [HttpPost("registerAdmin")]
         public async Task<ActionResult<User>> RegisterAdmin(RegisterRequest model)
         {
@@ -169,7 +170,7 @@ namespace OnlineStore.Controllers
             return Ok(new { message = "Đăng ký thành công." });
 
         }
-        [Authorize(Role.Admin)]
+        //[Authorize(Role.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
