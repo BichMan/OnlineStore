@@ -35,11 +35,11 @@ namespace OnlineStore.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
-            var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
+            var user = _context.Users.SingleOrDefault(x => x.Email == model.Email);
 
             // validate
             if (user == null || !BCryptNet.Verify(model.Password, user.PasswordHash))
-                throw new AppException("Username or password is incorrect");
+                return null;
 
             // authentication successful so generate jwt token
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
@@ -55,7 +55,6 @@ namespace OnlineStore.Services
         public User GetById(int id) 
         {
             var user = _context.Users.Find(id);
-            if (user == null) throw new KeyNotFoundException("User not found");
             return user;
         }
     }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitHubDesktop\\GitHub\\OnlineStore\\OnlineStore\\OnlineStore.csproj": {}
+    "C:\\Users\\intern.ttbman\\Desktop\\OnlineStore\\OnlineStore\\OnlineStore.csproj": {}
   },
   "projects": {
-    "D:\\GitHubDesktop\\GitHub\\OnlineStore\\OnlineStore\\OnlineStore.csproj": {
+    "C:\\Users\\intern.ttbman\\Desktop\\OnlineStore\\OnlineStore\\OnlineStore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHubDesktop\\GitHub\\OnlineStore\\OnlineStore\\OnlineStore.csproj",
+        "projectUniqueName": "C:\\Users\\intern.ttbman\\Desktop\\OnlineStore\\OnlineStore\\OnlineStore.csproj",
         "projectName": "OnlineStore",
-        "projectPath": "D:\\GitHubDesktop\\GitHub\\OnlineStore\\OnlineStore\\OnlineStore.csproj",
-        "packagesPath": "C:\\Users\\tranb\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHubDesktop\\GitHub\\OnlineStore\\OnlineStore\\obj\\",
+        "projectPath": "C:\\Users\\intern.ttbman\\Desktop\\OnlineStore\\OnlineStore\\OnlineStore.csproj",
+        "packagesPath": "C:\\Users\\intern.ttbman\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\intern.ttbman\\Desktop\\OnlineStore\\OnlineStore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tranb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\intern.ttbman\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
