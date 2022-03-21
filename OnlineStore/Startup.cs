@@ -73,8 +73,8 @@ namespace OnlineStore
                 swagger.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "ASP.NET 5 Web API",
-                    Description = "Authentication and Authorization in ASP.NET 5 with JWT and Swagger"
+                    Title = "Online Shop Using ASP.Net Core Web API",
+                    Description = "Using ASP.Net Core 5 Web API Swagger"
                 });
                 // To Enable authorization using Swagger (JWT)    
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

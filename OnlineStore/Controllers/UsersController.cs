@@ -80,7 +80,7 @@ namespace OnlineStore.Controllers
                 return NotFound(new { message = "User not found." });
 
             }
-            if (_context.Users.Any(x => x.Username == model.Username)
+            if (_context.Users.Any(x => x.Username == model.Username))
             {
                 return NotFound(new { message = "User Name đã được sử dụng. Hãy thử lại." });
             }
