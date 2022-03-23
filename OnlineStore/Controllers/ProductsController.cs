@@ -39,15 +39,49 @@ namespace OnlineStore.Controllers
         public async Task<ActionResult<Product>> Get(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            var productCategory = GetCategory(product.BrandId);
+            var productBrand = GetBrand(product.BrandId);
             var productAttribute = GetAttribute(product.AttributesId);
             if (product == null)
             {
                 return NotFound(new { message = "Không tìm thấy sản phẩm này." });
             }
             product.productAttributes = productAttribute;
-            product.productBrand = productCategory;
+            product.productBrand = productBrand;
             return Ok(product);
+        }
+        
+        [Authorize(Role.Admin)]
+        [HttpGet("ProductsByBrand/{brandid}")]
+        public ActionResult<IEnumerable<Product>> GetByBrand(int brandid)
+        {
+            var productBrand = GetBrand(brandid);
+
+           
+            if (productBrand == null)
+            {
+                return NotFound(new { message = "Không tìm thấy id này." });
+            }
+            var products = _context.Products.Where(x=>x.productBrand.Id == brandid)
+                .Include(x => x.productAttributes).Include(x => x.productBrand).AsEnumerable();
+           
+            return Ok(products);
+        }
+        
+        [Authorize(Role.Admin)]
+        [HttpGet("ProductsByAttribute/{attributeId}")]
+        public ActionResult<IEnumerable<Product>> GetByAttribute(int attributeId)
+        {
+
+            var productAttribute = GetAttribute(attributeId);
+
+            if (productAttribute == null)
+            {
+                return NotFound(new { message = "Không tìm thấy id này." });
+            }
+            var products = _context.Products.Where(x=>x.productAttributes.Id == attributeId)
+                .Include(x => x.productAttributes).Include(x => x.productBrand).AsEnumerable();
+           
+            return Ok(products);
         }
 
         [Authorize(Role.Admin)]
@@ -65,7 +99,7 @@ namespace OnlineStore.Controllers
             var price = product.Price;
             var description = product.Description;
             var content = product.Content;
-            var categoryId = product.BrandId;
+            var BrandId = product.BrandId;
             var attributeId = product.AttributesId;
 
             if (model.Name == null)
@@ -88,17 +122,17 @@ namespace OnlineStore.Controllers
             {
                 model.Content = content;
             }
-            if (model.CategoryId == 0)
+            if (model.BrandId == 0)
             {
-                model.CategoryId = categoryId;
+                model.BrandId = BrandId;
             }
             if (model.AttributesId == 0)
             {
                 model.AttributesId = attributeId;
             }
-            var productCategory = GetCategory(model.CategoryId);
+            var productBrand = GetBrand(model.BrandId);
             var productAttribute = GetAttribute(model.AttributesId);
-            if (productCategory == null)
+            if (productBrand == null)
             {
                 return NotFound(new { message = "Không tìm thấy danh mục sản phẩm này." });
             }
@@ -109,7 +143,7 @@ namespace OnlineStore.Controllers
 
             _mapper.Map(model, product);
             product.productAttributes = productAttribute;
-            product.productBrand = productCategory;
+            product.productBrand = productBrand;
             _context.Products.Update(product);
             _context.SaveChanges();
             return Ok(product);
@@ -127,8 +161,8 @@ namespace OnlineStore.Controllers
             {
                 return NotFound(new { message = "Vui lòng nhập số tiền." });
             }
-            var productCategory = GetCategory(model.CategoryId);
-            if (productCategory == null)
+            var productBrand = GetBrand(model.BrandId);
+            if (productBrand == null)
             {
                 return NotFound(new { message = "Không tìm thấy danh mục sản phẩm này." });
             }
@@ -141,7 +175,9 @@ namespace OnlineStore.Controllers
 
             var product = _mapper.Map<Product>(model);
             product.productAttributes = productAttribute;
-            product.productBrand = productCategory;
+            product.productBrand = productBrand;
+            product.BrandId = productBrand.Id;
+            product.AttributesId = productAttribute.Id;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
@@ -171,10 +207,10 @@ namespace OnlineStore.Controllers
             return product;
         }
 
-        private ProductBrand GetCategory(int id)
+        private ProductBrand GetBrand(int id)
         {
-            var productCategory = _context.ProductBrands.Find(id);
-            return productCategory;
+            var productBrand = _context.ProductBrands.Find(id);
+            return productBrand;
         }
         private ProductAttribute GetAttribute(int id)
         {

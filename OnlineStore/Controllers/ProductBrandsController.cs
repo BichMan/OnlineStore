@@ -37,27 +37,27 @@ namespace OnlineStore.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductBrand>> Get(int id)
         {
-            var productCategory = await _context.ProductBrands.FindAsync(id);
+            var productBrand = await _context.ProductBrands.FindAsync(id);
 
-            if (productCategory == null)
+            if (productBrand == null)
             {
                 return NotFound(new { message = "Không tìm thấy danh mục này." });
             }
 
-            return Ok(productCategory);
+            return Ok(productBrand);
         }
 
         [Authorize(Role.Admin)]
         [HttpPut("{id}")]
         public ActionResult<ProductBrand> Put(int id, ProductBrandRequest model)
         {
-            var productCategory = GetCategory(id);
-            if (productCategory == null)
+            var productBrand = GetBrand(id);
+            if (productBrand == null)
             {
                 return NotFound(new { message = "Không tìm thấy danh mục này." });
             }
-            var name = productCategory.Name;
-            var description = productCategory.Description;
+            var name = productBrand.Name;
+            var description = productBrand.Description;
             if (model.Name == null)
             {
                 model.Name = name;
@@ -66,11 +66,11 @@ namespace OnlineStore.Controllers
             {
                 model.Description = description;
             }
-            _mapper.Map(model, productCategory);
+            _mapper.Map(model, productBrand);
 
-            _context.ProductBrands.Update(productCategory);
+            _context.ProductBrands.Update(productBrand);
             _context.SaveChanges();
-            return Ok(productCategory);
+            return Ok(productBrand);
         }
 
         [Authorize(Role.Admin)]
@@ -81,8 +81,8 @@ namespace OnlineStore.Controllers
             {
                 return NotFound(new { message = "Vui lòng điền đầy đủ thông tin." });
             }
-            var productCategory = _mapper.Map<ProductBrand>(model);
-            _context.ProductBrands.Add(productCategory);
+            var productBrand = _mapper.Map<ProductBrand>(model);
+            _context.ProductBrands.Add(productBrand);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Thêm danh mục sản phẩm thành công." });
@@ -94,13 +94,13 @@ namespace OnlineStore.Controllers
         {
             try
             {
-                var productCategory = await _context.ProductBrands.FindAsync(id);
-                if (productCategory == null)
+                var productBrand = await _context.ProductBrands.FindAsync(id);
+                if (productBrand == null)
                 {
                     return NotFound(new { message = "Không tìm thấy Id này." });
                 }
 
-                _context.ProductBrands.Remove(productCategory);
+                _context.ProductBrands.Remove(productBrand);
                 await _context.SaveChangesAsync();
 
                 return Ok(new { message = "Xóa thông tin thành công." });
@@ -112,10 +112,10 @@ namespace OnlineStore.Controllers
 
         }
 
-        private ProductBrand GetCategory(int id)
+        private ProductBrand GetBrand(int id)
         {
-            var productCategory = _context.ProductBrands.Find(id);
-            return productCategory;
+            var productBrand = _context.ProductBrands.Find(id);
+            return productBrand;
         }
     }
 }
