@@ -44,6 +44,10 @@ namespace OnlineStore
             });
             services.AddDbContext<DataContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:mycnn"]));
             //services.AddDbContext<DataContext>();
+            //services.AddCors(c =>
+            //{
+            //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            //});
             services.AddCors();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

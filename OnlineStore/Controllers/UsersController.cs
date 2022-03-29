@@ -34,7 +34,7 @@ namespace OnlineStore.Controllers
         public IActionResult Authenticate(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model);
-            if(response == null)
+            if (response == null)
             {
                 return BadRequest(new { message = "Username or password is incorrect" });
 
@@ -62,8 +62,8 @@ namespace OnlineStore.Controllers
             var user = getUser(id);
             if (user == null)
             {
-                return NotFound(new {message = "User not found" });
-            } 
+                return NotFound(new { message = "User not found" });
+            }
 
             return Ok(user);
         }
@@ -88,13 +88,13 @@ namespace OnlineStore.Controllers
             var address = user.Address;
             var birthdate = user.Birthdate;
             var avatar = user.Avatar;
-            user.Birthdate.ToString("d/M/yyyy");
+            user.Birthdate.ToString("d-M-yyyy");
 
             //Verify whether date entered in dd/MM/yyyy format.
 
             if (model.Birthdate == DateTime.MinValue)
             {
-                return NotFound(new { message = "Ngày sinh không hợp lệ. Phải nhập d/M/yyyy." });
+                return NotFound(new { message = "Ngày sinh không hợp lệ. Phải nhập d-M-yyyy." });
             }
             if (model.Username == null)
             {
@@ -112,7 +112,7 @@ namespace OnlineStore.Controllers
             {
                 model.Avatar = avatar;
             }
-           
+
             _mapper.Map(model, user);
 
             _context.Users.Update(user);
@@ -126,7 +126,7 @@ namespace OnlineStore.Controllers
         public async Task<ActionResult<User>> RegisterUser(RegisterRequest model)
         {
 
-            if (model.Username == null ||model.Email == null || model.Password == null)
+            if (model.Username == null || model.Email == null || model.Password == null)
             {
                 return NotFound(new { message = "Điền đầy đủ thông tin." });
             }
@@ -153,7 +153,7 @@ namespace OnlineStore.Controllers
         public async Task<ActionResult<User>> RegisterAdmin(RegisterRequest model)
         {
 
-            if (model.Username == null ||model.Email == null || model.Password == null)
+            if (model.Username == null || model.Email == null || model.Password == null)
             {
                 return NotFound(new { message = "Điền đầy đủ thông tin." });
             }

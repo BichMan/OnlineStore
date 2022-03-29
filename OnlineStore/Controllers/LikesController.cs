@@ -127,10 +127,6 @@ namespace OnlineStore.Controllers
             return Ok(new { message = "Delete successfully." });
         }
 
-        private bool LikeExists(int id)
-        {
-            return _context.Likes.Any(e => e.Id == id);
-        }
         private User GetUser(int id)
         {
             var user = _context.Users.Find(id);
