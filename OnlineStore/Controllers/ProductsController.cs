@@ -26,7 +26,7 @@ namespace OnlineStore.Controllers
             _mapper = mapper;
             _context = context;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<Product> Gets()
         {
